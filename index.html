@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amaron | متجر إلكتروني</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="topbar">
+
+  <div class="logo">Amaron</div>
+
+  <div class="search">
+    <input id="searchInput" placeholder="ابحث عن منتج...">
+    <span>⌕</span>
+  </div>
+
+  <button class="cart" id="cartBtn">
+    🛒
+    <span>السلة</span>
+    <b id="cartCount">0</b>
+  </button>
+
+</header>
+
+<nav class="nav">
+
+  <button data-section="home"> الرئيسية</button>
+  <button data-section="offers"> العروض</button>
+  <button data-section="best"> الأكثر مبيعًا</button>
+  <button data-section="new"> جديد</button>
+
+</nav>
+
+
+<main id="homePage">
+
+  <section class="hero">
+
+    <div>
+      <small>🔥 عروض مميزة</small>
+
+      <h1>تسوق بسهولة وبأفضل الأسعار</h1>
+
+      <p>
+        منتجات مختارة وأسعار مميزة وتوصيل سريع.
+      </p>
+
+      <button class="hero-btn" data-section="offers">
+        شاهد العروض
+      </button>
+    </div>
+
+    <div class="hero-art">
+      SHOP
+    </div>
+
+  </section>
+
+
+  <!-- العروض -->
+
+  <section id="offersSection">
+
+    <div class="section-title">
+      <h2>🔥 العروض</h2>
+      <span>خصومات تصل إلى -99%</span>
+    </div>
+
+    <section id="offersProducts" class="grid"></section>
+
+  </section>
+
+
+  <!-- الأكثر مبيعاً -->
+
+  <section id="bestSection">
+
+    <div class="section-title">
+      <h2>⭐ الأكثر مبيعًا</h2>
+      <span>المنتجات الأكثر طلبًا</span>
+    </div>
+
+    <section id="bestProducts" class="grid"></section>
+
+  </section>
+
+
+  <!-- جديد -->
+
+  <section id="newSection">
+
+    <div class="section-title">
+      <h2>🆕 وصل حديثًا</h2>
+      <span>أحدث المنتجات</span>
+    </div>
+
+    <section id="newProducts" class="grid"></section>
+
+  </section>
+
+
+  <!-- جميع المنتجات -->
+
+  <section id="allSection">
+
+    <div class="section-title">
+      <h2>🛍️ جميع المنتجات</h2>
+    </div>
+
+    <section id="products" class="grid"></section>
+
+  </section>
+
+</main>
+
+
+<!-- صفحة المنتج والطلب -->
+
+<section id="orderPage" class="order-page hidden">
+
+  <button class="back" id="backBtn">
+    ← العودة للمنتجات
+  </button>
+
+  <div class="order-card">
+
+    <div class="selected-product" id="selectedProduct"></div>
+
+    <div>
+
+      <h2>معلومات الطلب</h2>
+
+      <p class="muted">
+        أدخل معلوماتك لإتمام طلبك.
+      </p>
+
+      <form id="orderForm">
+
+        <input type="hidden" id="productName">
+
+        <label>
+          الاسم الكامل *
+          <input id="fullName" required>
+        </label>
+
+        <label>
+          رقم الهاتف *
+          <input id="phone" type="tel" required>
+        </label>
+
+        <label>
+          البريد الإلكتروني
+          <span>(اختياري)</span>
+          <input id="email" type="email">
+        </label>
+
+        <label>
+          المدينة *
+          <input id="city" required>
+        </label>
+
+        <label>
+          العنوان *
+          <textarea id="address" required rows="3"></textarea>
+        </label>
+
+        <label>
+          الكمية *
+          <input id="quantity" type="number" min="1" value="1" required>
+        </label>
+
+        <button class="submit" type="submit">
+          تأكيد الطلب
+        </button>
+
+        <p id="status"></p>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- السلة -->
+
+<section id="cartPage" class="cart-page hidden">
+
+  <button class="back" id="cartBackBtn">
+    ← العودة للمتجر
+  </button>
+
+  <div class="cart-box">
+
+    <div class="cart-header">
+      <h2>🛒 سلة التسوق</h2>
+      <span id="cartItemsCount">0 منتجات</span>
+    </div>
+
+    <div id="cartItems"></div>
+
+    <div id="emptyCart" class="empty-cart">
+      🛒
+      <h3>السلة فارغة</h3>
+      <p>لم تقم بإضافة أي منتجات بعد.</p>
+    </div>
+
+    <div class="cart-total">
+
+      <div>
+        <span>المجموع:</span>
+        <strong id="cartTotal">0 درهم</strong>
+      </div>
+
+      <button id="checkoutBtn">
+        إتمام الطلب
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- الطلبات السابقة -->
+
+<section id="ordersPage" class="orders-page hidden">
+
+  <button class="back" id="ordersBackBtn">
+    ← العودة
+  </button>
+
+  <h2>📦 طلباتي</h2>
+
+  <div id="ordersList"></div>
+
+</section>
+
+
+<div id="toast"></div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Amaron TV</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            min-height: 100vh;
+
+            background: #080808;
+
+            color: white;
+
+            font-family: Arial, sans-serif;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            overflow: hidden;
+
+            transition:
+                background 0.15s ease;
+
+        }
+
+
+        /* ==========================================
+           CONTAINER
+        ========================================== */
+
+        .container {
+
+            width: min(1100px, 92%);
+
+            text-align: center;
+
+        }
+
+
+        /* ==========================================
+           LOGO
+        ========================================== */
+
+        .logo {
+
+            font-size: 52px;
+
+            font-weight: bold;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        /* ==========================================
+           STATUS
+        ========================================== */
+
+        .status {
+
+            display: inline-block;
+
+            padding: 12px 25px;
+
+            border-radius: 40px;
+
+            background: #333;
+
+            margin-bottom: 30px;
+
+            font-size: 22px;
+
+        }
+
+
+        .status.connected {
+
+            background: #0b7a35;
+
+        }
+
+
+        /* ==========================================
+           EMPTY
+        ========================================== */
+
+        .empty {
+
+            color: #777;
+
+            font-size: 28px;
+
+            margin-top: 50px;
+
+        }
+
+
+        /* ==========================================
+           ORDER
+        ========================================== */
+
+        .order {
+
+            display: none;
+
+            background: #151515;
+
+            border-radius: 30px;
+
+            padding: 40px;
+
+            text-align: right;
+
+            box-shadow:
+                0 0 40px
+                rgba(255,255,255,0.08);
+
+        }
+
+
+        .order.show {
+
+            display: block;
+
+            animation:
+                orderAppear
+                0.5s
+                ease-out;
+
+        }
+
+
+        /* ==========================================
+           ORDER APPEAR
+        ========================================== */
+
+        @keyframes orderAppear {
+
+            0% {
+
+                opacity: 0;
+
+                transform:
+                    scale(0.85)
+                    translateY(30px);
+
+            }
+
+            100% {
+
+                opacity: 1;
+
+                transform:
+                    scale(1)
+                    translateY(0);
+
+            }
+
+        }
+
+
+        /* ==========================================
+           TITLE
+        ========================================== */
+
+        .title {
+
+            font-size: 48px;
+
+            font-weight: bold;
+
+            margin-bottom: 30px;
+
+            text-align: center;
+
+        }
+
+
+        /* ==========================================
+           ROW
+        ========================================== */
+
+        .row {
+
+            font-size: 30px;
+
+            padding: 16px 0;
+
+            border-bottom:
+                1px solid #333;
+
+        }
+
+
+        .row strong {
+
+            margin-right: 10px;
+
+        }
+
+
+        /* ==========================================
+           TOTAL
+        ========================================== */
+
+        .total {
+
+            font-size: 45px;
+
+            font-weight: bold;
+
+            margin-top: 30px;
+
+            text-align: center;
+
+        }
+
+
+        /* ==========================================
+           NEW ORDER FLASH
+        ========================================== */
+
+        body.new-order {
+
+            animation:
+                screenFlash
+                0.35s
+                ease-in-out
+                4;
+
+        }
+
+
+        @keyframes screenFlash {
+
+            0% {
+
+                background: #080808;
+
+            }
+
+            50% {
+
+                background: #193d25;
+
+            }
+
+            100% {
+
+                background: #080808;
+
+            }
+
+        }
+
+
+        /* ==========================================
+           SOUND BUTTON
+        ========================================== */
+
+        .sound-button {
+
+            position: fixed;
+
+            bottom: 25px;
+
+            left: 50%;
+
+            transform:
+                translateX(-50%);
+
+            padding: 15px 30px;
+
+            border: none;
+
+            border-radius: 30px;
+
+            background: #0b7a35;
+
+            color: white;
+
+            font-size: 20px;
+
+            cursor: pointer;
+
+            z-index: 999;
+
+        }
+
+
+        .sound-button.hidden {
+
+            display: none;
+
+        }
+
+
+        /* ==========================================
+           MOBILE
+        ========================================== */
+
+        @media (max-width: 700px) {
+
+            .logo {
+
+                font-size: 38px;
+
+            }
+
+
+            .title {
+
+                font-size: 34px;
+
+            }
+
+
+            .row {
+
+                font-size: 21px;
+
+            }
+
+
+            .total {
+
+                font-size: 32px;
+
+            }
+
+
+            .order {
+
+                padding: 25px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="container">
+
+
+        <div class="logo">
+
+            🛍️ AMARON
+
+        </div>
+
+
+        <div
+            id="status"
+            class="status"
+        >
+
+            🟡 جاري الاتصال بالسيرفر...
+
+        </div>
+
+
+        <div
+            id="empty"
+            class="empty"
+        >
+
+            في انتظار الطلبات...
+
+        </div>
+
+
+        <div
+            id="order"
+            class="order"
+        >
+
+
+            <div class="title">
+
+                🔔 طلب جديد
+
+            </div>
+
+
+            <div class="row">
+
+                👤 الاسم:
+
+                <strong id="name"></strong>
+
+            </div>
+
+
+            <div class="row">
+
+                📞 الهاتف:
+
+                <strong id="phone"></strong>
+
+            </div>
+
+
+            <div class="row">
+
+                🏙️ المدينة:
+
+                <strong id="city"></strong>
+
+            </div>
+
+
+            <div class="row">
+
+                📍 العنوان:
+
+                <strong id="address"></strong>
+
+            </div>
+
+
+            <div class="row">
+
+                📦 المنتج:
+
+                <strong id="product"></strong>
+
+            </div>
+
+
+            <div class="row">
+
+                🔢 الكمية:
+
+                <strong id="quantity"></strong>
+
+            </div>
+
+
+            <div class="total">
+
+                💰 الإجمالي:
+
+                <span id="total">
+
+                    0.00
+
+                </span>
+
+                درهم
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================================
+         SOUND BUTTON
+    =========================================== -->
+
+    <button
+        id="soundButton"
+        class="sound-button"
+    >
+
+        🔊 تفعيل صوت التنبيهات
+
+    </button>
+
+
+
+    <script>
+
+
+        /* ==========================================
+           VARIABLES
+        ========================================== */
+
+        let socket;
+
+        let audioContext = null;
+
+
+        const status =
+            document.getElementById(
+                "status"
+            );
+
+
+        const orderBox =
+            document.getElementById(
+                "order"
+            );
+
+
+        const empty =
+            document.getElementById(
+                "empty"
+            );
+
+
+        const soundButton =
+            document.getElementById(
+                "soundButton"
+            );
+
+
+
+        /* ==========================================
+           TV SECRET
+        ========================================== */
+
+        const TV_SECRET =
+            "AmaronTV2026Secure";
+
+
+
+        /* ==========================================
+           ENABLE SOUND
+        ========================================== */
+
+        function enableSound() {
+
+            try {
+
+                const AudioContext =
+                    window.AudioContext ||
+                    window.webkitAudioContext;
+
+
+                if (!AudioContext) {
+
+                    console.log(
+                        "AudioContext غير مدعوم"
+                    );
+
+                    return;
+
+                }
+
+
+                if (!audioContext) {
+
+                    audioContext =
+                        new AudioContext();
+
+                }
+
+
+                if (
+                    audioContext.state ===
+                    "suspended"
+                ) {
+
+                    audioContext.resume();
+
+                }
+
+
+                playBeep();
+
+
+                soundButton.classList.add(
+                    "hidden"
+                );
+
+
+                console.log(
+                    "🔊 Sound enabled"
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Sound initialization error:",
+                    error
+                );
+
+            }
+
+        }
+
+
+
+        /* ==========================================
+           SOUND BUTTON
+        ========================================== */
+
+        soundButton.addEventListener(
+            "click",
+            enableSound
+        );
+
+
+
+        /* ==========================================
+           PLAY BEEP
+        ========================================== */
+
+        function playBeep() {
+
+            try {
+
+                if (!audioContext) {
+
+                    return;
+
+                }
+
+
+                if (
+                    audioContext.state ===
+                    "suspended"
+                ) {
+
+                    audioContext.resume();
+
+                }
+
+
+                const oscillator =
+                    audioContext.createOscillator();
+
+
+                const gain =
+                    audioContext.createGain();
+
+
+                oscillator.type =
+                    "sine";
+
+
+                oscillator.frequency.value =
+                    900;
+
+
+                gain.gain.setValueAtTime(
+                    0.001,
+                    audioContext.currentTime
+                );
+
+
+                gain.gain.exponentialRampToValueAtTime(
+                    0.5,
+                    audioContext.currentTime + 0.03
+                );
+
+
+                gain.gain.exponentialRampToValueAtTime(
+                    0.001,
+                    audioContext.currentTime + 0.7
+                );
+
+
+                oscillator.connect(
+                    gain
+                );
+
+
+                gain.connect(
+                    audioContext.destination
+                );
+
+
+                oscillator.start();
+
+
+                oscillator.stop(
+                    audioContext.currentTime + 0.7
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Beep error:",
+                    error
+                );
+
+            }
+
+        }
+
+
+
+        /* ==========================================
+           CONNECT TO SERVER
+        ========================================== */
+
+        function connect() {
+
+
+            const protocol =
+                location.protocol === "https:"
+                    ? "wss:"
+                    : "ws:";
+
+
+            const socketUrl =
+                protocol +
+                "//" +
+                location.host +
+                "/tv";
+
+
+            console.log(
+                "📡 Connecting to:",
+                socketUrl
+            );
+
+
+            socket =
+                new WebSocket(
+                    socketUrl
+                );
+
+
+
+            /* ======================================
+               CONNECTION OPEN
+            ====================================== */
+
+            socket.onopen =
+                function () {
+
+
+                    console.log(
+                        "📺 Connected to server"
+                    );
+
+
+                    status.textContent =
+                        "🟡 التحقق من التلفاز...";
+
+
+                    status.classList.remove(
+                        "connected"
+                    );
+
+
+                    /* إرسال كلمة السر */
+
+                    socket.send(
+                        JSON.stringify({
+
+                            type:
+                                "authenticate",
+
+                            secret:
+                                TV_SECRET
+
+                        })
+                    );
+
+
+                };
+
+
+
+            /* ======================================
+               MESSAGE
+            ====================================== */
+
+            socket.onmessage =
+                function (event) {
+
+
+                    console.log(
+                        "📩 Server message:",
+                        event.data
+                    );
+
+
+                    try {
+
+
+                        const data =
+                            JSON.parse(
+                                event.data
+                            );
+
+
+
+                        /* =========================
+                           AUTHENTICATED
+                        ========================= */
+
+                        if (
+                            data.type ===
+                            "authenticated"
+                        ) {
+
+
+                            if (
+                                data.success
+                            ) {
+
+
+                                status.textContent =
+                                    "🟢 متصل وآمن";
+
+
+                                status.classList.add(
+                                    "connected"
+                                );
+
+
+                                console.log(
+                                    "🔐 TV authenticated successfully"
+                                );
+
+
+                            } else {
+
+
+                                status.textContent =
+                                    "🔴 فشل التحقق";
+
+
+                                console.error(
+                                    "❌ TV authentication failed"
+                                );
+
+
+                            }
+
+                        }
+
+
+
+                        /* =========================
+                           NEW ORDER
+                        ========================= */
+
+                        if (
+                            data.type ===
+                            "new-order"
+                        ) {
+
+
+                            console.log(
+                                "🛍️ NEW ORDER:",
+                                data.order
+                            );
+
+
+                            showOrder(
+                                data.order
+                            );
+
+
+                            /* صوت */
+
+                            playBeep();
+
+
+                            /* وميض */
+
+                            document.body.classList.remove(
+                                "new-order"
+                            );
+
+
+                            void
+                                document.body
+                                .offsetWidth;
+
+
+                            document.body.classList.add(
+                                "new-order"
+                            );
+
+
+                        }
+
+
+                    } catch (error) {
+
+
+                        console.error(
+                            "❌ Message error:",
+                            error
+                        );
+
+
+                    }
+
+                };
+
+
+
+            /* ======================================
+               CONNECTION CLOSED
+            ====================================== */
+
+            socket.onclose =
+                function () {
+
+
+                    console.log(
+                        "📺 TV disconnected"
+                    );
+
+
+                    status.textContent =
+                        "🔴 غير متصل";
+
+
+                    status.classList.remove(
+                        "connected"
+                    );
+
+
+                    setTimeout(
+                        connect,
+                        3000
+                    );
+
+
+                };
+
+
+
+            /* ======================================
+               ERROR
+            ====================================== */
+
+            socket.onerror =
+                function (error) {
+
+
+                    console.error(
+                        "❌ WebSocket error:",
+                        error
+                    );
+
+
+                    status.textContent =
+                        "🔴 خطأ في الاتصال";
+
+
+                    status.classList.remove(
+                        "connected"
+                    );
+
+
+                };
+
+
+        }
+
+
+
+        /* ==========================================
+           SHOW ORDER
+        ========================================== */
+
+        function showOrder(order) {
+
+
+            document.getElementById(
+                "name"
+            ).textContent =
+                order.name ||
+                "غير متوفر";
+
+
+            document.getElementById(
+                "phone"
+            ).textContent =
+                order.phone ||
+                "غير متوفر";
+
+
+            document.getElementById(
+                "city"
+            ).textContent =
+                order.city ||
+                "غير متوفر";
+
+
+            document.getElementById(
+                "address"
+            ).textContent =
+                order.address ||
+                "غير متوفر";
+
+
+            document.getElementById(
+                "product"
+            ).textContent =
+                order.product ||
+                "غير متوفر";
+
+
+            document.getElementById(
+                "quantity"
+            ).textContent =
+                order.quantity ||
+                1;
+
+
+            document.getElementById(
+                "total"
+            ).textContent =
+                Number(
+                    order.total || 0
+                ).toFixed(2);
+
+
+            /* إخفاء رسالة الانتظار */
+
+            empty.style.display =
+                "none";
+
+
+            /* إعادة تشغيل الحركة */
+
+            orderBox.classList.remove(
+                "show"
+            );
+
+
+            void
+                orderBox
+                .offsetWidth;
+
+
+            orderBox.classList.add(
+                "show"
+            );
+
+
+        }
+
+
+
+        /* ==========================================
+           START
+        ========================================== */
+
+        connect();
+
+
+    </script>
+
+
+</body>
+
+</html>
